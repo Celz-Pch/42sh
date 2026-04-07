@@ -192,7 +192,7 @@ jobs:
       github.event_name == 'pull_request' && needs.check_mirror.outputs.is_mirror == 'false'
     needs:
       - check_mirror
-      - run_tests
+      - merge_to_main
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
