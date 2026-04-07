@@ -98,14 +98,14 @@ TO_RM = *.gcda *.gcno unit_tests *.html *.css *.log $(LOGS_DIR)
 %.o: %.c
 	@printf "$(H_CYAN)Compiling$(END) $(BOLD)$<$(END) ...\n"
 	@$(ECC) $(CFLAGS) -Wno-unused-command-line-argument -c $< -o $@ 2>/dev/null && \
-		echo "$(BOLD)$(H_GREEN)[ OK ]$(END)" || \
-		(echo "$(BOLD)$(H_RED)[ FAIL ]$(END)" && $(ECC) $(CFLAGS) -c $< -o $@ && exit 1)
+		printf "%b\n" "$(BOLD)$(H_GREEN)[ OK ]$(END)" || \
+		(printf "%b\n" "$(BOLD)$(H_RED)[ FAIL ]$(END)" && $(ECC) $(CFLAGS) -c $< -o $@ && exit 1)
 
 # ─── Macro: Fancy Header ─────────────────────────────────────────────────
 define pretty_header
-	@echo "$(BOLD)$(H_PURPLE)╔═══════════════════════════════════════════════════════════════╗$(END)"
-	@echo "$(BOLD)$(H_PURPLE)║$(END)$(BOLD)$(WHITE) $(1)$(END)"
-	@echo "$(BOLD)$(H_PURPLE)╚═══════════════════════════════════════════════════════════════╝$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)╔═══════════════════════════════════════════════════════════════╗$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)║$(END)$(BOLD)$(WHITE) $(1)$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)╚═══════════════════════════════════════════════════════════════╝$(END)"
 endef
 
 # ─── Rules ───────────────────────────────────────────────────────────────
@@ -121,7 +121,7 @@ $(NAME): $(OBJ)
 	@echo ""
 	$(call pretty_header, Creating binary of : $(PROJECT))
 	@$(ECC) $(CFLAGS) -Wno-unused-command-line-argument -o $(NAME) $(OBJ)
-	@echo "$(BOLD)$(WHITE) done$(END)"
+	@printf "%b\n" "$(BOLD)$(WHITE) done$(END)"
 	$(call pretty_header, Successfully compiled $(PROJECT)!)
 	@echo ""
 
@@ -129,31 +129,31 @@ install: $(NAME)
 	@mkdir -p $(LOCAL_BIN)
 	@cp $(NAME) $(LOCAL_BIN)/$(NAME)
 	@chmod u+x $(LOCAL_BIN)/$(NAME)
-	@echo "$(BOLD)$(H_GREEN)Installed$(END) $(NAME) -> $(LOCAL_BIN)/$(NAME)"
-	@if ! echo "$$PATH" | grep -q "$(LOCAL_BIN)"; then \
-		echo "$(BOLD)$(H_YELLOW)$(LOCAL_BIN) is not in PATH.$(END)"; \
-		echo "Add this to ~/.zshrc:"; \
-		echo "  export PATH=\"$(LOCAL_BIN):\$$PATH\""; \
-		echo "Then run: source ~/.zshrc && hash -r"; \
+	@printf "%b\n" "$(BOLD)$(H_GREEN)Installed$(END) $(NAME) -> $(LOCAL_BIN)/$(NAME)"
+	@if ! printf "%b\n" "$$PATH" | grep -q "$(LOCAL_BIN)"; then \
+		printf "%b\n" "$(BOLD)$(H_YELLOW)$(LOCAL_BIN) is not in PATH.$(END)"; \
+		printf "%b\n" "Add this to ~/.zshrc:"; \
+		printf "%b\n" "  export PATH=\"$(LOCAL_BIN):\$$PATH\""; \
+		printf "%b\n" "Then run: source ~/.zshrc && hash -r"; \
 	fi
 
 uninstall:
 	@rm -f $(LOCAL_BIN)/$(NAME)
-	@echo "$(BOLD)$(H_YELLOW)Removed$(END) $(LOCAL_BIN)/$(NAME)"
+	@printf "%b\n" "$(BOLD)$(H_YELLOW)Removed$(END) $(LOCAL_BIN)/$(NAME)"
 
 debug: debug_build valgrind
 
 debug_build:
 	$(call pretty_header, Compiling with debug flag for : $(PROJECT))
 	@$(ECC) $(DEBUGFLAGS) -Wno-unused-command-line-argument -o $(NAME) $(SRC)
-	@echo "$(BOLD)$(WHITE) done$(END)"
+	@printf "%b\n" "$(BOLD)$(WHITE) done$(END)"
 	@echo ""
-	@echo "$(BOLD)$(H_GREEN)Debug build ready! Time to hunt bugs!$(END)"
-	@echo "$(H_CYAN)Tip: set DEBUG_STRICT=1 to make valgrind fail the target$(END)"
+	@printf "%b\n" "$(BOLD)$(H_GREEN)Debug build ready! Time to hunt bugs!$(END)"
+	@printf "%b\n" "$(H_CYAN)Tip: set DEBUG_STRICT=1 to make valgrind fail the target$(END)"
 
 valgrind:
 	@echo ""
-	@echo "$(H_PURPLE)Running Valgrind memory check...$(END)"
+	@printf "%b\n" "$(H_PURPLE)Running Valgrind memory check...$(END)"
 	@mkdir -p $(LOGS_DIR)
 	@VALGRIND_STATUS=0; \
 	valgrind --leak-check=full \
@@ -161,12 +161,12 @@ valgrind:
 	    --track-origins=yes \
 	    --log-file=$(LOGS_DIR)/valgrind.log \
 	    ./$(NAME) $(ARGUMENTS) || VALGRIND_STATUS=$$?; \
-	echo "$(H_CYAN)Valgrind report saved to $(H_YELLOW)$(LOGS_DIR)/valgrind.log$(END)"; \
-	echo ""; \
+	printf "%b\n" "$(H_CYAN)Valgrind report saved to $(H_YELLOW)$(LOGS_DIR)/valgrind.log$(END)"; \
+	printf "%b\n" ""; \
 	if [ -f $(LOGS_DIR)/valgrind.log ] && grep -q "ERROR SUMMARY: 0 errors" $(LOGS_DIR)/valgrind.log; then \
-	    echo "$(BOLD)$(H_GREEN)No memory errors detected! Perfect!$(END)"; \
+	    printf "%b\n" "$(BOLD)$(H_GREEN)No memory errors detected! Perfect!$(END)"; \
 	else \
-	    echo "$(BOLD)$(H_YELLOW)Memory issues detected. Check $(LOGS_DIR)/valgrind.log$(END)"; \
+	    printf "%b\n" "$(BOLD)$(H_YELLOW)Memory issues detected. Check $(LOGS_DIR)/valgrind.log$(END)"; \
 	fi; \
 	if [ "$(DEBUG_STRICT)" = "1" ] && [ $$VALGRIND_STATUS -ne 0 ]; then exit $$VALGRIND_STATUS; fi
 	@echo ""
@@ -184,12 +184,12 @@ functional_tests: all
 	$(call pretty_header, Running Functional Tests)
 	@mkdir -p $(LOGS_DIR)/functional_tests
 	@./tests/run_tests.sh; EXIT_CODE=$$?; \
-	echo ""; \
-	echo "$(H_CYAN)Functional test report saved to $(H_YELLOW)$(LOGS_DIR)/functional_tests/$(END)"; \
+	echo" ""; \
+	printf "%b\n" "$(H_CYAN)Functional test report saved to $(H_YELLOW)$(LOGS_DIR)/functional_tests/$(END)"; \
 	if [ $$EXIT_CODE -eq 0 ]; then \
-	    echo "$(BOLD)$(H_GREEN)All functional tests passed!$(END)"; \
+	    printf "%b\n" "$(BOLD)$(H_GREEN)All functional tests passed!$(END)"; \
 	else \
-	    echo "$(BOLD)$(H_YELLOW)Some tests failed! Check $(LOGS_DIR)/functional_tests/ for details$(END)"; \
+	    printf "%b\n" "$(BOLD)$(H_YELLOW)Some tests failed! Check $(LOGS_DIR)/functional_tests/ for details$(END)"; \
 	fi; \
 	exit $$EXIT_CODE
 
@@ -208,35 +208,35 @@ re: fclean all
 # ─── Help ────────────────────────────────────────────────────────────────
 help:
 	@echo ""
-	@echo "$(BOLD)$(H_PURPLE)╔═══════════════════════════════════════════════════════════════╗$(END)"
-	@echo "$(BOLD)$(H_PURPLE)║$(END)$(BOLD)$(H_WHITE)   42sh — Unix Shell in C  ·  Help Menu                       $(H_PURPLE)║$(END)"
-	@echo "$(BOLD)$(H_PURPLE)╚═══════════════════════════════════════════════════════════════╝$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)╔═══════════════════════════════════════════════════════════════╗$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)║$(END)$(BOLD)$(H_WHITE)   42sh — Unix Shell in C  ·  Help Menu                       $(H_PURPLE)║$(END)"
+	@printf "%b\n" "$(BOLD)$(H_PURPLE)╚═══════════════════════════════════════════════════════════════╝$(END)"
 	@echo ""
-	@echo "$(BOLD)$(H_CYAN)── Build ─────────────────────────────────────────────────────────$(END)"
-	@echo "  $(BOLD)make$(END) / $(BOLD)make all$(END)             Compile all sources from src/ into $(BOLD)$(NAME)$(END)"
-	@echo "  $(BOLD)make re$(END)                     Full rebuild (fclean + all)"
-	@echo "  $(BOLD)make debug$(END)                  Debug build (-g3) + Valgrind memory report"
-	@echo "  $(BOLD)make debug DEBUG_STRICT=1$(END)   Fail target if Valgrind returns non-zero"
-	@echo "  $(BOLD)make valgrind$(END)               Run Valgrind on current binary"
+	@printf "%b\n" "$(BOLD)$(H_CYAN)── Build ─────────────────────────────────────────────────────────$(END)"
+	@printf "%b\n" "  $(BOLD)make$(END) / $(BOLD)make all$(END)             Compile all sources from src/ into $(BOLD)$(NAME)$(END)"
+	@printf "%b\n" "  $(BOLD)make re$(END)                     Full rebuild (fclean + all)"
+	@printf "%b\n" "  $(BOLD)make debug$(END)                  Debug build (-g3) + Valgrind memory report"
+	@printf "%b\n" "  $(BOLD)make debug DEBUG_STRICT=1$(END)   Fail target if Valgrind returns non-zero"
+	@printf "%b\n" "  $(BOLD)make valgrind$(END)               Run Valgrind on current binary"
 	@echo ""
-	@echo "$(BOLD)$(H_CYAN)── Install ───────────────────────────────────────────────────────$(END)"
-	@echo "  $(BOLD)make install$(END)                Install $(NAME) to $(LOCAL_BIN)"
-	@echo "  $(BOLD)make uninstall$(END)              Remove $(NAME) from $(LOCAL_BIN)"
+	@printf "%b\n" "$(BOLD)$(H_CYAN)── Install ───────────────────────────────────────────────────────$(END)"
+	@printf "%b\n" "  $(BOLD)make install$(END)                Install $(NAME) to $(LOCAL_BIN)"
+	@printf "%b\n" "  $(BOLD)make uninstall$(END)              Remove $(NAME) from $(LOCAL_BIN)"
 	@echo ""
-	@echo "$(BOLD)$(H_CYAN)── Tests & Coverage ──────────────────────────────────────────────$(END)"
-	@echo "  $(BOLD)make unit_tests$(END)             Build Criterion unit-tests binary"
-	@echo "  $(BOLD)make tests_run$(END)              Run tests → logs in $(LOGS_DIR)/"
-	@echo "  $(BOLD)make coverage$(END)               Run tests → HTML report at $(COVERAGE_HTML)"
-	@echo "  $(BOLD)make functional_tests$(END)       Run functional tests (tests/run_tests.sh)"
-	@echo ""
-	@echo "$(BOLD)$(H_CYAN)── Cleanup ───────────────────────────────────────────────────────$(END)"
-	@echo "  $(BOLD)make clean$(END)                  Remove .o files"
-	@echo "  $(BOLD)make fclean$(END)                 Remove binary, tests and coverage artifacts"
-	@echo ""
-	@echo "$(BOLD)$(H_CYAN)── Variables ─────────────────────────────────────────────────────$(END)"
-	@echo "  ARGUMENTS    = $(ARGUMENTS)"
-	@echo "  DEBUG_STRICT = $(DEBUG_STRICT)"
-	@echo "  LOCAL_BIN    = $(LOCAL_BIN)"
+	@printf "%b\n" "$(BOLD)$(H_CYAN)── Tests & Coverage ──────────────────────────────────────────────$(END)"
+	@printf "%b\n" "  $(BOLD)make unit_tests$(END)             Build Criterion unit-tests binary"
+	@printf "%b\n" "  $(BOLD)make tests_run$(END)              Run tests → logs in $(LOGS_DIR)/"
+	@printf "%b\n" "  $(BOLD)make coverage$(END)               Run tests → HTML report at $(COVERAGE_HTML)"
+	@printf "%b\n" "  $(BOLD)make functional_tests$(END)       Run functional tests (tests/run_tests.sh)"
+	@printf "%b\n" ""
+	@printf "%b\n" "$(BOLD)$(H_CYAN)── Cleanup ───────────────────────────────────────────────────────$(END)"
+	@printf "%b\n" "  $(BOLD)make clean$(END)                  Remove .o files"
+	@printf "%b\n" "  $(BOLD)make fclean$(END)                 Remove binary, tests and coverage artifacts"
+	@printf "%b\n" ""
+	@printf "%b\n" "$(BOLD)$(H_CYAN)── Variables ─────────────────────────────────────────────────────$(END)"
+	@printf "%b\n" "  ARGUMENTS    = $(ARGUMENTS)"
+	@printf "%b\n" "  DEBUG_STRICT = $(DEBUG_STRICT)"
+	@printf "%b\n" "  LOCAL_BIN    = $(LOCAL_BIN)"
 	@echo ""
 
 # ─── Styles ──────────────────────────────────────────────────────────────
