@@ -167,7 +167,6 @@ jobs:
         with:
           fetch-depth: 0
 
-
       - name: Get body content
         id: pr_body
         run: |
@@ -184,7 +183,7 @@ jobs:
             --body "$COMMITS_LIST" \
             --reviewer "lukas-sgx,copilot" \
             --base main \
-            --head ${{ github.ref_name }}
+            --head dev || echo "PR already exists or could not be created"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
