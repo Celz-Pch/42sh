@@ -203,12 +203,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          COMMITS_URL: ${{ github.event.pull_request.commits_url }}
         run: |
           set -e
 
+          if [ -z "$PR_NUMBER" ] || [ -z "$COMMITS_URL" ]; then
+            echo "approved=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           ALLOWED_AUTHORS="lukas-sgx Celz-Pch"
           AUTHORS=$(gh api \
-            repos/${{ github.repository }}/pulls/$PR_NUMBER/commits \
+            "$COMMITS_URL" \
             --paginate \
             --jq '.[].author.login // ""')
 
