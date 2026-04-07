@@ -189,7 +189,7 @@ jobs:
 
   auto_approve_trusted_authors:
     if:
-      github.event_name == 'pull_request' && needs.check_mirror.outputs.is_mirror == 'false'
+      github.event_name == 'push'
     needs:
       - check_mirror
       - merge_to_main
