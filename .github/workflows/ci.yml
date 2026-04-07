@@ -1,12 +1,22 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - "no-ga/**"
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
     branches-ignore:
       - "no-ga/**"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   MIRROR_SSH_URL: ${{ vars.MIRROR_SSH_URL }}
