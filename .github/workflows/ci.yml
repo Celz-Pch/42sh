@@ -259,8 +259,11 @@ jobs:
         if: steps.verify_authors.outputs.approved == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
+          set -e
           gh pr review ${{ steps.verify_authors.outputs.pr_number }} \
+            --repo "$REPO" \
             --approve \
             --body "Auto-approved: all commits are authored by lukas-sgx or Celz-Pch."
 
