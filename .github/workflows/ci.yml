@@ -216,8 +216,10 @@ jobs:
           AUTHORS=$(gh api \
             "$COMMITS_URL" \
             --paginate \
-            --jq '.[].author.login // ""')
-          
+            --jq '.[] | (.author.login // .committer.login // "")' | \
+            sed '/^[[:space:]]*$/d' | sort -u)
+
+          echo "Resolved commit authors:"
           echo "$AUTHORS"
 
           if [ -z "$AUTHORS" ]; then
