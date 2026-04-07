@@ -103,27 +103,27 @@ unit_tests:
 	@mkdir -p $(LOGS_DIR) $(COVERAGE_RAW_DIR)
 	@printf "$(H_CYAN)Building$(END) $(BOLD)unit_tests$(END) ...\n"
 	@$(CC) -o unit_tests $(SRCTST) $(TESTSFLAGS) $(CFLAGS) && \
-		echo "$(BOLD)$(H_GREEN)[ OK ]$(END)" || \
-		(echo "$(BOLD)$(H_YELLOW)[ FAIL ]$(END)" && exit 1)
+		printf "%b\n" "$(BOLD)$(H_GREEN)[ OK ]$(END)" || \
+		(printf "%b\n" "$(BOLD)$(H_YELLOW)[ FAIL ]$(END)" && exit 1)
 
 tests_run: unit_tests
 	@CRITERION_SHOW_STDOUT=1 ./unit_tests > $(LOGS_DIR)/test_output.log 2>&1; EXIT_CODE=$$?; \
 	if [ $$EXIT_CODE -ne 0 ]; then \
-	    echo "$(BOLD)$(H_YELLOW)Some tests failed! Check $(LOGS_DIR)/test_output.log$(END)"; \
+	    printf "%b\n" "$(BOLD)$(H_YELLOW)Some tests failed! Check $(LOGS_DIR)/test_output.log$(END)"; \
 	    cat $(LOGS_DIR)/test_output.log; \
 	    exit $$EXIT_CODE; \
 	fi; \
-	echo "$(BOLD)$(H_GREEN)All tests passed! Generating coverage report...$(END)"; \
+	printf "%b\n" "$(BOLD)$(H_GREEN)All tests passed! Generating coverage report...$(END)"; \
 	gcovr $(GCOVRFLAGS) $(WEBGCOVRFLAGS) > $(LOGS_DIR)/coverage_report.log 2>&1; \
 	gcovr $(GCOVRFLAGS) --branches >> $(LOGS_DIR)/coverage_report.log 2>&1; \
-	echo "$(BOLD)$(H_GREEN)Done! Logs: $(LOGS_DIR)/test_output.log | $(LOGS_DIR)/coverage_report.log$(END)"
+	printf "%b\n" "$(BOLD)$(H_GREEN)Done! Logs: $(LOGS_DIR)/test_output.log | $(LOGS_DIR)/coverage_report.log$(END)"
 
 coverage: unit_tests
 	@mkdir -p $(LOGS_DIR) $(COVERAGE_RAW_DIR)
 	@./unit_tests
 	@gcovr $(GCOVRFLAGS) $(WEBGCOVRFLAGS)
 	@gcovr $(GCOVRFLAGS) --txt-metric branch
-	@echo "$(BOLD)$(H_CYAN)Running Valgrind...$(END)"
+	@printf "%b\n" "$(BOLD)$(H_CYAN)Running Valgrind...$(END)"
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes \
 	    --log-file=$(VALGRIND_LOG) ./unit_tests 2>/dev/null; \
 	{ echo '<!DOCTYPE html><html><head><meta charset="utf-8">'; \
@@ -137,7 +137,7 @@ coverage: unit_tests
 	  echo '<h1>Valgrind Report — unit_tests</h1><pre>'; \
 	  cat $(VALGRIND_LOG); \
 	  echo '</pre></body></html>'; } > $(VALGRIND_HTML)
-	@echo "$(BOLD)$(H_GREEN)Valgrind report: $(VALGRIND_HTML)$(END)"
+	@printf "%b\n" "$(BOLD)$(H_GREEN)Valgrind report: $(VALGRIND_HTML)$(END)"
 	@xdg-open $(COVERAGE_HTML)
 	@xdg-open $(VALGRIND_HTML)
 
