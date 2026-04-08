@@ -49,6 +49,7 @@ SRC_PARSING = \
 SRC_UTILS = \
 	src/utils/io/my_putstr.c \
 	src/utils/io/get_file_size_stat.c \
+	src/utils/io/my_putnbr.c \
 	src/utils/io/openator.c \
 	src/utils/display/get_branch_git.c \
 	src/utils/display/get_folder.c \
