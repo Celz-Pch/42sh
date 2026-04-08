@@ -15,7 +15,7 @@
 static void pwd(char *pwd_folder)
 {
     if (pwd_folder) {
-        my_putstr("\033[102m  ");
+        my_putstr("\033[102m   ");
         my_putstr(pwd_folder);
         my_putstr(" \033[0m");
         free(pwd_folder);
@@ -25,7 +25,7 @@ static void pwd(char *pwd_folder)
 static void git(char *git_branch)
 {
     if (git_branch) {
-        my_putstr("\033[104m  ");
+        my_putstr("\033[104m ");
         my_putstr(git_branch);
         my_putstr(" \033[0m");
         free(git_branch);
