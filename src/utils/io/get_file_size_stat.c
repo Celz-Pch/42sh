@@ -7,19 +7,18 @@
 
 #include <sys/stat.h>
 #include <unistd.h>
-#include "../../Headers/my.h"
 
-int get_file_size_stat(char *filepath)
+int get_file_size_stat(char const *filepath)
 {
     struct stat statstruct;
 
     if (filepath == NULL) {
         write(2, "NULL FILEPATH\n", 14);
-        return FAILURE;
+        return 84;
     }
     if (stat(filepath, &statstruct) == -1) {
         write(2, "STAT FAILURE\n", 13);
-        return FAILURE;
+        return 84;
     }
     return statstruct.st_size;
 }
