@@ -8,16 +8,16 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../../Headers/my.h"
+#include "../../../include/minishell.h"
 
 int check_open(int fd)
 {
     if (fd < 0) {
         write(2, "FAILURE IN OPEN : FILE NOT FOUND OR DOESN'T EXIST\n",
             50);
-        return FAILURE;
+        return 84;
     }
-    return SUCCESS;
+    return 0;
 }
 
 int check_read(char *buffer, int bytes_read)
@@ -25,23 +25,23 @@ int check_read(char *buffer, int bytes_read)
     if (bytes_read < 0) {
         write(2, "READ FAILURE\n", 13);
         free(buffer);
-        return FAILURE;
+        return 84;
     }
     if (bytes_read == 0) {
         write(2, "FILE IS EMPTY\n", 14);
         free(buffer);
-        return FAILURE;
+        return 84;
     }
-    return SUCCESS;
+    return 0;
 }
 
 int check_buffer(char *buffer)
 {
     if (!buffer) {
         write(2, "BUFFER MEMORY ALLOCATION FAILURE\n", 34);
-        return FAILURE;
+        return 84;
     }
-    return SUCCESS;
+    return 0;
 }
 
 static char *read_content(int fd, int size)
@@ -50,12 +50,12 @@ static char *read_content(int fd, int size)
     int bytes_read;
 
     buffer = malloc(sizeof(char) * (size + 1));
-    if (check_buffer(buffer) == FAILURE) {
+    if (check_buffer(buffer) == 84) {
         close(fd);
         return NULL;
     }
     bytes_read = read(fd, buffer, size);
-    if (check_read(buffer, bytes_read) == FAILURE) {
+    if (check_read(buffer, bytes_read) == 84) {
         close(fd);
         return NULL;
     }
@@ -74,8 +74,8 @@ char *openator(char const *filepath)
         return NULL;
     }
     fd = open(filepath, O_RDONLY);
-    if (check_open(fd) == FAILURE)
+    if (check_open(fd) == 84)
         return NULL;
-    size = get_file_size_no_stat(filepath);
+    size = get_file_size_stat(filepath);
     return read_content(fd, size);
 }
