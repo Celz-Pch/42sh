@@ -28,6 +28,8 @@ int main(int argc, char **argv, char **env)
             buffer[my_strlen(buffer) - 1] = '\0';
         last_exit = execute_command(stock, buffer);
     }
+    if (isatty(0))
+        my_putstr("exit\n");
     free(buffer);
     free_main(stock);
     return last_exit;
