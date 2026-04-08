@@ -69,30 +69,42 @@ static char *get_exec_path(main_t *main_stock, command_ctx_t *ctx)
     return loop_bin(main_stock, ctx->command);
 }
 
-int exec_any(main_t *main_stock, command_ctx_t *ctx)
+static int dir_permission_denied(char *command)
 {
-    int direct = is_direct_path(ctx->command);
-    char *path = get_exec_path(main_stock, ctx);
-    char **env = build_env(main_stock->stock_env);
-    int status;
+    my_putstrerror(command);
+    my_putstrerror(": Permission denied.\n");
+    return 1;
+}
 
-    if (is_directory(ctx->command)) {
-        my_putstrerror(ctx->command);
-        my_putstrerror(": Permission denied.\n");
-        return 1;
-    }
+static int command_not_found(char *command, char **env)
+{
+    my_putstrerror(command);
+    my_putstrerror(": Command not found.\n");
+    free_env(env);
+    return 1;
+}
 
-    if (!env)
-        return 1;
-    if (!path) {
-        my_putstrerror(ctx->command);
-        my_putstrerror(": Command not found.\n");
-        free_env(env);
-        return 1;
-    }
-    status = run_fork(main_stock, ctx, path, env);
-    if (!direct)
+static int run_and_cleanup(main_t *main_stock, command_ctx_t *ctx,
+    char *path, char **env)
+{
+    int status = run_fork(main_stock, ctx, path, env);
+
+    if (!is_direct_path(ctx->command))
         free(path);
     free_env(env);
     return status;
+}
+
+int exec_any(main_t *main_stock, command_ctx_t *ctx)
+{
+    char *path = get_exec_path(main_stock, ctx);
+    char **env = build_env(main_stock->stock_env);
+
+    if (is_directory(ctx->command))
+        return dir_permission_denied(ctx->command);
+    if (!env)
+        return 1;
+    if (!path)
+        return command_not_found(ctx->command, env);
+    return run_and_cleanup(main_stock, ctx, path, env);
 }
