@@ -24,6 +24,7 @@
     #include "core/types.h"
     #include "core/core.h"
     #include "utils/utils.h"
+    #include "utils/defines.h"
     #include "environment/environment.h"
     #include "parsing/parsing.h"
     #include "builtins/builtins.h"
