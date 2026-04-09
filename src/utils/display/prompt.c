@@ -37,6 +37,7 @@ void display_prompt(void)
     char *git_branch = get_branch_git();
     char *pwd_folder = get_folder();
 
+    display_time();
     my_putstr("\033[");
     my_putnbr(90);
     my_putstr("m");
