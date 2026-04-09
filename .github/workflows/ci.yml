@@ -27,7 +27,7 @@ env:
 jobs:
   check_mirror:
     environment: production
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     outputs:
       is_mirror: ${{ steps.check.outputs.is_mirror }}
@@ -49,7 +49,7 @@ jobs:
     if:
       needs.check_mirror.outputs.is_mirror == 'false'
     environment: production
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker
 
@@ -149,7 +149,7 @@ jobs:
         
   run_tests:
     environment: production
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker
     needs:
@@ -168,7 +168,7 @@ jobs:
     needs:
       - check_mirror
       - run_tests
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       pull-requests: write
       contents: read
@@ -204,7 +204,7 @@ jobs:
       - check_mirror
       - run_tests
     environment: production
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
