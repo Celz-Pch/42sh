@@ -27,7 +27,7 @@ static void username(char *user)
     if (user) {
         my_putstr("\033[103m 🐧 ");
         my_putstr(user);
-        my_putstr("\033[0m");
+        my_putstr(" \033[0m");
     }
 }
 
@@ -44,13 +44,13 @@ static void git(char *git_branch)
 void display_prompt(char *user)
 {
     char *git_branch = get_branch_git();
-    char *pwd_folder = get_folder();;
+    char *pwd_folder = get_folder();
 
     display_time();
     my_putstr("\033[");
     my_putnbr(90);
     my_putstr("m");
-    my_putstr("╭─\033[0m");
+    my_putstr("╭─ \033[0m");
     my_putstr("\033[47m\033[30m  \033[0m");
     pwd(pwd_folder);
     username(user);
