@@ -5,8 +5,8 @@
 ** czshrc
 */
 
-#ifndef __CZ_SHRT_H__
-    #define __CZ_SHRT_H__
+#ifndef CZ_SHRT_H
+    #define CZ_SHRT_H
 #include <stdbool.h>
 
 typedef enum date_format_e {
@@ -29,5 +29,7 @@ typedef struct prompt_s {
     infos_t date;
     infos_t time;
 } prompt_t;
+#ifndef CZ_SHRT_H
+    #define CZ_SHRT_H
 
 #endif

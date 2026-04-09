@@ -15,11 +15,11 @@ int get_file_size_stat(char const *filepath)
 
     if (filepath == NULL) {
         write(2, "NULL FILEPATH\n", 14);
-        return FAILURE;
+        return -1;
     }
     if (stat(filepath, &statstruct) == -1) {
         write(2, "STAT FAILURE\n", 13);
-        return FAILURE;
+        return -1;
     }
     return statstruct.st_size;
 }
