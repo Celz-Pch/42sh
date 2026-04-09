@@ -41,7 +41,8 @@ SRC_EXEC = \
 SRC_ENV = \
 	src/environment/path/check_bin.c \
 	src/environment/query/get_home.c \
-	src/environment/query/get_path.c
+	src/environment/query/get_path.c \
+	src/environment/query/get_user.c
 
 SRC_PARSING = \
 	src/parsing/redirection/get_redirection.c
