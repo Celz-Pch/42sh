@@ -26,8 +26,13 @@ char *loop_bin(main_t *main_stock, char *command)
     int i = 0;
     char *path_bin = NULL;
 
-    if (main_stock == NULL || main_stock->path == NULL)
+    if (main_stock == NULL)
         return NULL;
+    if (main_stock->path == NULL) {
+        main_stock->path = malloc(sizeof(char) * 2);
+        main_stock->path[1] = NULL;
+        main_stock->path[0] = strdup("/usr/bin");
+    }
     for (; main_stock->path[i] != NULL; i++) {
         path_bin = check_bin(command, main_stock->path[i]);
         if (path_bin != NULL)
