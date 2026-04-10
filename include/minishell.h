@@ -25,6 +25,7 @@
     #include "core/core.h"
     #include "utils/utils.h"
     #include "environment/environment.h"
+    #include "environment/env_var_management/en_var_management.h"
     #include "parsing/parsing.h"
     #include "builtins/builtins.h"
     #include "execution/execution.h"
