@@ -9,7 +9,9 @@
     #define CORE_H
 
     #include "core/types.h"
+    #define BUFFER_SIZE 128
 
+int get_command(char **buffer);
 env_t *init_env(char **env);
 main_t *init_main(char **env);
 int set_command_context(main_t *stock_main, char *command);
