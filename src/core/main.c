@@ -16,13 +16,12 @@ static void write_print(void)
 int main(int argc, char **argv, char **env)
 {
     main_t *stock = init_main(env);
-    size_t buffer_size = 64;
     char *buffer = NULL;
     int last_exit = 0;
 
     while (my_strcmp(buffer, "exit") != 0) {
         write_print();
-        if (getline(&buffer, &buffer_size, stdin) == -1)
+        if (get_command(&buffer) == -1)
             break;
         if (buffer[my_strlen(buffer) - 1] == '\n')
             buffer[my_strlen(buffer) - 1] = '\0';
