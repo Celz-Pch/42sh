@@ -47,4 +47,10 @@ typedef struct pipeline_state_s {
     int count;
 } pipeline_state_t;
 
+typedef struct alias_s {
+    char *name;
+    char *value;
+    struct alias_s *next;
+} alias_t;
+
 #endif
