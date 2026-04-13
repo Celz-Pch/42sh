@@ -17,56 +17,57 @@ static void init_termios(struct termios *tr, struct termios *old)
     tcsetattr(STDIN_FILENO, TCSANOW, tr);
 }
 
-static void print_command(char *buffer, int len)
+static void print_command(char *buffer, int len, int cursor)
 {
     write(1, "\r\x1b[2K", 5);
     my_putstr("\033[90m╰─❯\033[0m ");
-    write(1, buffer, len);
+    write(1, buffer, cursor);
+    write(1, &buffer[cursor], len - cursor);
+    for (int i = len; cursor < i; i--)
+        write(1, "\b", 1);
 }
 
-static int realloc_buffer(char **buffer, int len, int *repeat)
+static int append_char(char **buffer, char ch, int *len, int *cursor)
 {
-    if (len + 1 >= BUFFER_SIZE) {
-        *buffer = realloc(*buffer, BUFFER_SIZE * *repeat);
-        if (!(*buffer))
-            return -1;
-        *repeat += 1;
-    }
-    return 0;
-}
+    int i = *len;
 
-static int append_char(char **buffer, char ch, int *len)
-{
-    (*buffer)[*len] = ch;
+    for (; i > *cursor; i--)
+        (*buffer)[i + 1] = (*buffer)[i];
+    (*buffer)[i] = ch;
     *len += 1;
     (*buffer)[*len] = '\0';
+    *cursor += 1;
     return 0;
 }
 
-static int specific_char(char ch, char **buffer, int *len)
+static int specific_char(char ch, char **buffer, int *len, int *cursor)
 {
-    if (arrow_handling(ch) == 1)
+    if (arrow_handling(ch, cursor, *len) == 1)
         return 1;
     if (ch == 127) {
+        if (*cursor == 0)
+            return 1;
+        memmove(&(*buffer)[*cursor - 1],
+            &(*buffer)[*cursor], *len - *cursor + 1);
         *len -= (*len > 0 ? 1 : 0);
+        *cursor -= (*cursor > 0 ? 1 : 0);
         return 1;
     }
     return 0;
 }
 
-static int check_char(char **buffer, int *repeat, int *len)
+static int check_char(char **buffer, int *repeat,
+    int *len, int *cursor)
 {
     char ch;
 
     if (read(STDIN_FILENO, &ch, 1) == -1)
         return -1;
-    if (specific_char(ch, buffer, len) == 1)
+    if (specific_char(ch, buffer, len, cursor) == 1)
         return 0;
-    append_char(buffer, ch, len);
+    append_char(buffer, ch, len, cursor);
     if (ch == '\n')
         return write(1, "\n\x1b[2K", 5);
-    if (realloc_buffer(buffer, *len, repeat) == -1)
-        return -1;
     return 0;
 }
 
@@ -76,14 +77,15 @@ static int create_command(char **buffer)
     int status = 0;
     struct termios tr;
     struct termios old;
+    int cursor = 0;
 
-    *buffer = malloc(BUFFER_SIZE + 1);
+    (*buffer) = malloc(BUFFER_SIZE);
     if (!*buffer)
         return -1;
     init_termios(&tr, &old);
     for (int repeat = 2; status == 0;) {
-        print_command(*buffer, len);
-        status = check_char(buffer, &repeat, &len);
+        print_command(*buffer, len, cursor);
+        status = check_char(buffer, &repeat, &len, &cursor);
     }
     tcsetattr(STDIN_FILENO, TCSANOW, &old);
     return status;
@@ -96,9 +98,8 @@ int get_command(char **buffer)
     if ((*buffer))
         free(*buffer);
     if (isatty(0)) {
-        if (create_command(buffer) == -1) {
+        if (create_command(buffer) == -1)
             return -1;
-        }
     } else {
         if (getline(buffer, &buffer_size, stdin) == -1)
             return -1;
