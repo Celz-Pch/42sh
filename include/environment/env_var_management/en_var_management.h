@@ -5,7 +5,7 @@
 ** en_var_management
 */
 
-#include "../../minishell.h"
+#include "c_zsh.h"
 
 #ifndef ENV_VAR_MANAGEMENT_HPP
     #define ENV_VAR_MANAGEMENT_HPP
