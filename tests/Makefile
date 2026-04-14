@@ -33,7 +33,8 @@ SRC_ENV = \
 	$(wildcard ../src/environment/query/*.c)
 
 SRC_PARSING = \
-	$(wildcard ../src/parsing/redirection/*.c)
+	$(wildcard ../src/parsing/redirection/*.c) \
+	$(wildcard ../src/parsing/quotes_management/*.c)
 
 SRC_UTILS = \
 	$(wildcard ../src/utils/io/*.c) \
