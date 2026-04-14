@@ -5,7 +5,7 @@
 ** execute
 */
 
-#include "42sh.h"
+#include "c_zsh.h"
 
 static int get_count_operator(char **commands)
 {
