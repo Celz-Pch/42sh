@@ -13,9 +13,13 @@ SRC_TESTS = \
 
 # ─── Project sources (no main.c) ─────────────────────────────────────────
 SRC_CORE = \
-	../src/core/init/init_env.c \
-	../src/core/init/init_main.c \
-	../src/core/context/command_context.c
+	src/core/main.c \
+	src/core/init/init_env.c \
+	src/core/init/init_main.c \
+	src/core/context/get_command.c \
+	src/core/context/arrow_handling.c \
+	src/core/context/manage_history.c \
+	src/core/context/command_context.c
 
 SRC_BUILTINS = \
 	../src/builtins/env/my_env.c \
