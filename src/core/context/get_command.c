@@ -42,8 +42,6 @@ static int append_char(char **buffer, char ch, int *len, int *cursor)
 
 static int specific_char(char ch, char **buffer, int *len, int *cursor)
 {
-    if (arrow_handling(ch, cursor, *len) == 1)
-        return 1;
     if (ch == 127) {
         if (*cursor == 0)
             return 1;
@@ -56,13 +54,14 @@ static int specific_char(char ch, char **buffer, int *len, int *cursor)
     return 0;
 }
 
-static int check_char(char **buffer, int *repeat,
-    int *len, int *cursor)
+static int check_char(history_t *history, char **buffer, int *len, int *cursor)
 {
     char ch;
 
     if (read(STDIN_FILENO, &ch, 1) == -1)
         return -1;
+    if (ch == ARROW_START)
+        return arrow_handling(history, buffer, cursor, len);
     if (specific_char(ch, buffer, len, cursor) == 1)
         return 0;
     append_char(buffer, ch, len, cursor);
@@ -71,21 +70,20 @@ static int check_char(char **buffer, int *repeat,
     return 0;
 }
 
-static int create_command(char **buffer)
+static int create_command(history_t *history, char **buffer)
 {
     int len = 0;
     int status = 0;
     struct termios tr;
     struct termios old;
-    int cursor = 0;
 
-    (*buffer) = malloc(BUFFER_SIZE);
+    (*buffer) = calloc(BUFFER_SIZE, 1);
     if (!*buffer)
         return -1;
     init_termios(&tr, &old);
-    for (int repeat = 2; status == 0;) {
+    for (int cursor = 0; status == 0;) {
         print_command(*buffer, len, cursor);
-        status = check_char(buffer, &repeat, &len, &cursor);
+        status = check_char(history, buffer, &len, &cursor);
     }
     tcsetattr(STDIN_FILENO, TCSANOW, &old);
     return status;
@@ -95,15 +93,15 @@ int get_command(char **buffer, history_t *history)
 {
     size_t buffer_size = BUFFER_SIZE;
 
-    if ((*buffer))
-        free(*buffer);
     if (isatty(0)) {
-        if (create_command(buffer) == -1)
+        if (create_command(history, buffer) == -1)
             return -1;
         manage_history(history, *buffer);
     } else {
         if (getline(buffer, &buffer_size, stdin) == -1)
             return -1;
     }
+    history->curr_cmd = NULL;
+    history->curr = NULL;
     return 0;
 }

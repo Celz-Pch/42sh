@@ -19,6 +19,7 @@ typedef struct history_cmd_s {
 
 typedef struct history_s {
     history_cmd_t *history_cmd;
+    history_cmd_t *curr_cmd;
     int id;
     char *curr;
 } history_t;

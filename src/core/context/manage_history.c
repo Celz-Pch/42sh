@@ -16,7 +16,7 @@ static void add_to_history(history_t *his, history_cmd_t *history)
 
     if (!file)
         return;
-    fprintf(file, "%6d\t%.2d:%.2d\t%s", his->id, t->tm_hour,
+    fprintf(file, "%6d\t%.2d:%.2d\t%s\n", his->id, t->tm_hour,
         t->tm_min, history->cmd);
     fclose(file);
 }
@@ -28,7 +28,8 @@ static history_cmd_t *push_front(history_t *his,
 
     if (!new)
         return NULL;
-    new->cmd = strdup(cmd);
+    new->cmd = cmd;
+    new->cmd[strlen(new->cmd) - 1] = '\0';
     new->id = his->id;
     his->id += 1;
     new->next = *history;

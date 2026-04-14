@@ -31,7 +31,6 @@ int main(int argc, char **argv, char **env)
     }
     if (isatty(0))
         my_putstr("exit\n");
-    free(buffer);
     free_main(stock);
     return last_exit;
 }
