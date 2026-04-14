@@ -4,7 +4,7 @@
 ** File description:
 ** bin
 */
-#include "minishell.h"
+#include "42sh.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -13,11 +13,11 @@ static int is_executable_file(char *full_path)
     struct stat st;
 
     if (!full_path)
-        return 0;
+        return SUCCESS;
     if (stat(full_path, &st) == -1)
-        return 0;
+        return SUCCESS;
     if (S_ISDIR(st.st_mode))
-        return 0;
+        return SUCCESS;
     return access(full_path, X_OK) == 0;
 }
 
@@ -66,6 +66,20 @@ static char *build_path(char *path, char *name)
     full_path = my_strconcat(tmp, name);
     free(tmp);
     return full_path;
+}
+
+int check_is_dir(char *command)
+{
+    struct stat st;
+
+    if (command == NULL)
+        return SUCCESS;
+    if (stat(command, &st) == 0 && S_ISDIR(st.st_mode)) {
+        my_putstrerror(command);
+        my_putstrerror(": Permission denied.");
+        return 1;
+    }
+    return SUCCESS;
 }
 
 char *check_bin(char *command, char *path)

@@ -5,7 +5,7 @@
 ** exec
 */
 
-#include "minishell.h"
+#include "42sh.h"
 
 static char *make_env_entry(char *key, char *value)
 {
@@ -48,7 +48,7 @@ static int is_direct_path(char *cmd)
     for (int i = 0; cmd[i]; i++)
         if (cmd[i] == '/')
             return 1;
-    return 0;
+    return SUCCESS;
 }
 
 static int direct_path_exists(char *path)

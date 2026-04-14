@@ -5,7 +5,7 @@
 ** env
 */
 
-#include "minishell.h"
+#include "42sh.h"
 
 static char *dup_n(char *src, int n)
 {
@@ -23,7 +23,7 @@ static int set_env_value(env_t *node, char *env_string, int sep)
 {
     if (env_string[sep] != '=') {
         node->value = NULL;
-        return 0;
+        return SUCCESS;
     }
     node->value = my_strdup(env_string + sep + 1);
     return node->value == NULL;
