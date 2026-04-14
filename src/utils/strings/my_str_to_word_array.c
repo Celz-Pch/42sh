@@ -5,7 +5,7 @@
 ** sandbox
 */
 
-#include "minishell.h"
+#include "c_zsh.h"
 
 static int is_separator(char c, char *separator)
 {

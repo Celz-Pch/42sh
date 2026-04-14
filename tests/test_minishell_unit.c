@@ -8,7 +8,7 @@
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 #include <stdlib.h>
-#include "minishell.h"
+#include "c_zsh.h"
 
 static void free_env_list_local(env_t *env)
 {
