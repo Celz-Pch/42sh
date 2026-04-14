@@ -65,9 +65,13 @@ int execute_operator(main_t *stock_main, char *command)
     char **operator_array = get_operator_array(command);
     int status_exec = 0;
     int i = 0;
+    int return_value;
 
     status_exec = execute_single_command(
         stock_main, commands[i], true);
-    return execute_operator_loop(stock_main, commands,
+    return_value = execute_operator_loop(stock_main, commands,
         operator_array, status_exec);
+    free_array(commands);
+    free_array(operator_array);
+    return return_value;
 }
