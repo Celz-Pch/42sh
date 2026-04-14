@@ -88,8 +88,6 @@ char *check_bin(char *command, char *path)
 
     if (command == NULL || path == NULL)
         return NULL;
-    if (check_is_dir(command) == 1)
-        return NULL;
     full_path = build_path(path, command);
     if (!full_path)
         return NULL;
