@@ -36,4 +36,7 @@ int get_seg(int status);
 
 int apply_redirection(command_ctx_t *ctx);
 
+int execute_double_and(main_t *stock_main, char *command);
+int execute_double_pipe(main_t *stock_main, char *command);
+
 #endif
