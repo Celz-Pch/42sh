@@ -17,6 +17,9 @@ static history_t *init_history(main_t *main)
     file = fopen(".c_zsh_history", "w+");
     if (file)
         fclose(file);
+    main->history->curr = malloc(BUFFER_SIZE + 1);
+    if (!main->history->curr)
+        return NULL;
     return main->history;
 }
 

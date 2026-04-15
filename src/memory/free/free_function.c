@@ -40,6 +40,7 @@ static void free_history(history_t *his, history_cmd_t *history)
         free(curr->cmd);
         free(curr);
     }
+    free(his->curr);
     free(his);
 }
 

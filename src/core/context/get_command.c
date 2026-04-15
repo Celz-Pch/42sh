@@ -102,6 +102,5 @@ int get_command(char **buffer, history_t *history)
             return -1;
     }
     history->curr_cmd = NULL;
-    history->curr = NULL;
     return 0;
 }
