@@ -51,6 +51,7 @@ SRC_ENV = \
 SRC_PARSING = \
 	src/parsing/redirection/get_redirection.c \
 	src/parsing/env_var_management/replace_env_vars.c \
+	src/parsing/quotes_management/manage_quotes.c \
 
 SRC_UTILS = \
 	src/utils/io/my_putstr.c \
@@ -66,6 +67,7 @@ SRC_UTILS = \
 	src/utils/strings/my_strncmp.c \
 	src/utils/strings/my_strstr.c \
 	src/utils/strings/my_str_to_word_array.c \
+	src/utils/strings/my_str_to_word_array_quotes.c \
 	src/utils/strings/my_wordarraylen.c \
 	src/utils/validation/my_ischar_num.c \
 	src/utils/validation/my_str_is_alphanum.c

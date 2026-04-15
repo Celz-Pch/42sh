@@ -5,7 +5,7 @@
 ** replace_env_vars
 */
 
-#include "c_zsh.h"
+#include "../../../include/c_zsh.h"
 
 static char *find_value(char *key, main_t *stock_main)
 {
