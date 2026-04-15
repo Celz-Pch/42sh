@@ -5,7 +5,7 @@
 ** main
 */
 
-#include "../../include/minishell.h"
+#include "c_zsh.h"
 
 static void write_print(main_t *stock)
 {

@@ -22,12 +22,18 @@ SRC_BUILTINS = \
 	src/builtins/env/my_env.c \
 	src/builtins/env/my_setenv.c \
 	src/builtins/env/my_unsetenv.c \
-	src/builtins/fs/my_chdir.c
+	src/builtins/fs/my_chdir.c \
+	src/builtins/jobs/my_jobs.c \
+	src/builtins/jobs/my_foreground.c \
+	src/builtins/jobs/my_background.c \
+	src/builtins/repeat/repeat.c \
+	src/builtins/env/printenv.c
 
 SRC_EXEC = \
 	src/execution/dispatch/execute_builtin.c \
 	src/execution/dispatch/execute_command.c \
 	src/execution/dispatch/execute_single_command.c \
+	src/execution/dispatch/execute_operation.c \
 	src/execution/external/exec_any.c \
 	src/execution/external/exec_error_case.c \
 	src/execution/external/run_fork.c \
@@ -186,7 +192,7 @@ tests_run: re
 	@$(MAKE) -C tests tests_run
 
 coverage: re
-	@$(MAKE) -C tests coverage src/execution/redirection/apply_redirection.c
+	@$(MAKE) -C tests coverage
 functional_tests: all
 	$(call pretty_header, Running Functional Tests)
 	@mkdir -p $(LOGS_DIR)/functional_tests
