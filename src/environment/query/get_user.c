@@ -10,7 +10,7 @@
  * @author Erwan Lo Presti
  */
 
-#include "../../../include/minishell.h"
+#include "c_zsh.h"
 
 char *get_user(env_t *stock_env)
 {
