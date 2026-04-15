@@ -51,6 +51,20 @@ Test(my_strstr, finds_substring)
     cr_assert_str_eq(res, "world");
 }
 
+Test(my_strstr, returns_null_when_not_found)
+{
+    const char *res = my_strstr("hello", "xyz");
+
+    cr_assert_null(res);
+}
+
+Test(my_strstr, finds_at_beginning)
+{
+    const char *res = my_strstr("hello", "hello");
+
+    cr_assert_not_null(res);
+}
+
 Test(my_str_to_word_array, splits_words)
 {
     char **arr = my_str_to_word_array("ls -la /tmp", " ");
@@ -69,4 +83,3 @@ Test(my_wordarray_len, counts_elements)
 
     cr_assert_eq(my_wordarray_len(arr), 2);
 }
-
