@@ -26,7 +26,8 @@ SRC_BUILTINS = \
 	src/builtins/jobs/my_jobs.c \
 	src/builtins/jobs/my_foreground.c \
 	src/builtins/jobs/my_background.c \
-	src/builtins/repeat/repeat.c
+	src/builtins/repeat/repeat.c \
+	src/builtins/scripts/foreach.c
 
 SRC_EXEC = \
 	src/execution/dispatch/execute_builtin.c \
@@ -69,7 +70,8 @@ SRC_UTILS = \
 	src/utils/strings/my_str_to_word_array_quotes.c \
 	src/utils/strings/my_wordarraylen.c \
 	src/utils/validation/my_ischar_num.c \
-	src/utils/validation/my_str_is_alphanum.c
+	src/utils/validation/my_str_is_alphanum.c \
+	src/utils/validation/my_char_is_alpha.c
 
 SRC_MEMORY = \
 	src/memory/free/free_function.c
