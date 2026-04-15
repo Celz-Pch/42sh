@@ -42,6 +42,16 @@ static void iso_date_format(struct tm *tm)
     printf("%d-%02d-%02d\n", tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
 }
 
+static int check_null_win(int has_win, struct winsize *w, int col)
+{
+    if (has_win) {
+        col = w->ws_col - 8;
+        if (col < 1)
+            col = 1;
+    }
+    return col;
+}
+
 void display_time(void)
 {
     time_t now = time(NULL);
@@ -53,11 +63,7 @@ void display_time(void)
 
     has_win = (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0);
     strftime(time_str, sizeof(time_str), "%H:%M:%S", tm);
-    if (has_win) {
-        col = w.ws_col - 8;
-        if (col < 1)
-            col = 1;
-    }
+    col = check_null_win(has_win, &w, col);
     long_date_format(tm);
     european_date_format(tm);
     us_date_format(tm);
@@ -65,5 +71,4 @@ void display_time(void)
     if (has_win)
         printf("\033[%dG", col);
     printf("%s\n", time_str);
-
 }
