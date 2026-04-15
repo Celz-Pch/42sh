@@ -16,7 +16,7 @@ const char *my_strstr(const char *str, const char *to_f)
         return str;
     for (int i = 0; str[i] != '\0'; i++) {
         k = 0;
-        if (str[i] == '"' || str[i] == '\'')
+        if (str[i] == '"')
             in_quote = !in_quote;
         if (in_quote)
             continue;
