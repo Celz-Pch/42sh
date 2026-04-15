@@ -22,12 +22,17 @@ SRC_BUILTINS = \
 	src/builtins/env/my_env.c \
 	src/builtins/env/my_setenv.c \
 	src/builtins/env/my_unsetenv.c \
-	src/builtins/fs/my_chdir.c
+	src/builtins/fs/my_chdir.c \
+	src/builtins/jobs/my_jobs.c \
+	src/builtins/jobs/my_foreground.c \
+	src/builtins/jobs/my_background.c \
+	src/builtins/repeat/repeat.c
 
 SRC_EXEC = \
 	src/execution/dispatch/execute_builtin.c \
 	src/execution/dispatch/execute_command.c \
 	src/execution/dispatch/execute_single_command.c \
+	src/execution/dispatch/execute_operation.c \
 	src/execution/external/exec_any.c \
 	src/execution/external/exec_error_case.c \
 	src/execution/external/run_fork.c \
@@ -44,7 +49,8 @@ SRC_ENV = \
 	src/environment/query/get_path.c
 
 SRC_PARSING = \
-	src/parsing/redirection/get_redirection.c
+	src/parsing/redirection/get_redirection.c \
+	src/parsing/quotes_management/manage_quotes.c \
 
 SRC_UTILS = \
 	src/utils/io/my_putstr.c \
@@ -60,6 +66,7 @@ SRC_UTILS = \
 	src/utils/strings/my_strncmp.c \
 	src/utils/strings/my_strstr.c \
 	src/utils/strings/my_str_to_word_array.c \
+	src/utils/strings/my_str_to_word_array_quotes.c \
 	src/utils/strings/my_wordarraylen.c \
 	src/utils/validation/my_ischar_num.c \
 	src/utils/validation/my_str_is_alphanum.c
@@ -183,7 +190,7 @@ tests_run: re
 	@$(MAKE) -C tests tests_run
 
 coverage: re
-	@$(MAKE) -C tests coverage src/execution/redirection/apply_redirection.c
+	@$(MAKE) -C tests coverage
 functional_tests: all
 	$(call pretty_header, Running Functional Tests)
 	@mkdir -p $(LOGS_DIR)/functional_tests
