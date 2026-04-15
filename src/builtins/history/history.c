@@ -9,7 +9,7 @@
 
 int builtin_history(main_t *main_stock, command_ctx_t *ctx)
 {
-    char *file = openator(".history.txt");
+    char *file = openator(".c_zsh_history");
 
     if (!file)
         return 1;
