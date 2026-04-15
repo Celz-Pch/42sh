@@ -31,5 +31,6 @@ char *openator(char const *filepath);
 char *get_folder(void);
 char *get_branch_git(void);
 void display_prompt(void);
+int my_char_is_alpha(char key);
 
 #endif
