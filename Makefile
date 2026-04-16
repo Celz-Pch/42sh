@@ -28,7 +28,7 @@ SRC_BUILTINS = \
 	src/builtins/jobs/my_background.c \
 	src/builtins/repeat/repeat.c \
 	src/builtins/fs/my_which.c \
-	src/builtins/fs/my_where.c 
+	src/builtins/fs/my_where.c \
 	src/builtins/env/printenv.c
 
 SRC_EXEC = \
