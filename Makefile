@@ -27,6 +27,8 @@ SRC_BUILTINS = \
 	src/builtins/jobs/my_foreground.c \
 	src/builtins/jobs/my_background.c \
 	src/builtins/repeat/repeat.c \
+	src/builtins/fs/my_which.c \
+	src/builtins/fs/my_where.c 
 	src/builtins/env/printenv.c
 
 SRC_EXEC = \
@@ -42,7 +44,7 @@ SRC_EXEC = \
 	src/execution/pipeline/pipeline_spawn.c \
 	src/execution/pipeline/pipeline_syntax.c \
 	src/execution/pipeline/pipeline_wait.c \
-	src/execution/redirection/apply_redirection.c
+	src/execution/redirection/apply_redirection.c 
 
 SRC_ENV = \
 	src/environment/path/check_bin.c \
@@ -51,7 +53,8 @@ SRC_ENV = \
 	src/environment/query/get_user.c
 
 SRC_PARSING = \
-	src/parsing/redirection/get_redirection.c
+	src/parsing/redirection/get_redirection.c \
+	src/parsing/quotes_management/manage_quotes.c \
 
 SRC_UTILS = \
 	src/utils/io/my_putstr.c \
@@ -69,6 +72,7 @@ SRC_UTILS = \
 	src/utils/strings/my_strncmp.c \
 	src/utils/strings/my_strstr.c \
 	src/utils/strings/my_str_to_word_array.c \
+	src/utils/strings/my_str_to_word_array_quotes.c \
 	src/utils/strings/my_wordarraylen.c \
 	src/utils/validation/my_ischar_num.c \
 	src/utils/validation/my_str_is_alphanum.c
