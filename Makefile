@@ -16,6 +16,9 @@ SRC_CORE = \
 	src/core/main.c \
 	src/core/init/init_env.c \
 	src/core/init/init_main.c \
+	src/core/context/get_command.c \
+	src/core/context/arrow_handling.c \
+	src/core/context/manage_history.c \
 	src/core/context/command_context.c
 
 SRC_BUILTINS = \
@@ -30,6 +33,7 @@ SRC_BUILTINS = \
 	src/builtins/fs/my_which.c \
 	src/builtins/fs/my_where.c \
 	src/builtins/env/printenv.c
+	src/builtins/history/history.c
 
 SRC_EXEC = \
 	src/execution/dispatch/execute_builtin.c \
