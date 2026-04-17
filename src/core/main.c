@@ -15,26 +15,43 @@ static void write_print(main_t *stock)
         display_prompt(user);
 }
 
+static void write_tty(char *buffer)
+{
+    if (isatty(0))
+        my_putstr(buffer);
+}
+
+static char *serialize(char *buffer)
+{
+    size_t len = 0;
+
+    if (!buffer)
+        return NULL;
+    len = my_strlen(buffer);
+    if (len > 0 && buffer[len - 1] == '\n')
+        buffer[len - 1] = '\0';
+    return buffer;
+}
+
 int main(int argc, char **argv, char **env)
 {
     main_t *stock = init_main(env);
-    size_t buffer_size = 0;
     char *buffer = NULL;
     int last_exit = 0;
+    int cmd = 0;
 
     while (my_strcmp(buffer, "exit") != 0) {
         write_print(stock);
-        if (getline(&buffer, &buffer_size, stdin) == -1)
-            break;
-        if (buffer[my_strlen(buffer) - 1] == '\n')
-            buffer[my_strlen(buffer) - 1] = '\0';
-        if (my_strcmp(buffer, "exit") == 0)
+        cmd = get_command(&buffer, stock->history, get_user(stock->stock_env));
+        if (cmd == CONTINUE)
+            continue;
+        buffer = serialize(buffer);
+        if (my_strcmp(buffer, "exit") == 0 || cmd == -1)
             break;
         last_exit = execute_command(stock, buffer);
     }
-    if (isatty(0))
-        my_putstr("exit\n");
-    free(buffer);
+    free_alloc(buffer);
+    write_tty("exit\n");
     free_main(stock);
     return last_exit;
 }

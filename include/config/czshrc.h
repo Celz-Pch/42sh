@@ -7,7 +7,8 @@
 
 #ifndef CZ_SHRT_H
     #define CZ_SHRT_H
-#include <stdbool.h>
+
+    #include <stdbool.h>
 
 typedef enum date_format_e {
     LONG,
@@ -30,7 +31,10 @@ typedef struct prompt_s {
     infos_t time;
     date_format_t date_format;
 } prompt_t;
-#ifndef CZ_SHRT_H
-    #define CZ_SHRT_H
+
+typedef struct buffer_s {
+    int *len;
+    char **buffer;
+} buffer_t;
 
 #endif

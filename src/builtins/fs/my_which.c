@@ -20,6 +20,7 @@ int builtin_which(main_t *main_stock, command_ctx_t *ctx)
         bin_place = check_bin(ctx->arg_command[0], main_stock->path[i]);
         if (bin_place != NULL) {
             printf("%s\n", bin_place);
+            free_alloc(bin_place);
             break;
         }
     }
