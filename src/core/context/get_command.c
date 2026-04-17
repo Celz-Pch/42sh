@@ -29,11 +29,8 @@ static void print_command(char *buffer, int len, int cursor)
 
 static int append_char(char **buffer, char ch, int *len, int *cursor)
 {
-    int i = *len;
-
-    for (; i > *cursor; i--)
-        (*buffer)[i + 1] = (*buffer)[i];
-    (*buffer)[i] = ch;
+    memmove(&(*buffer)[*cursor + 1], &(*buffer)[*cursor], *len - *cursor + 1);
+    (*buffer)[*cursor] = ch;
     *len += 1;
     (*buffer)[*len] = '\0';
     *cursor += 1;
@@ -77,9 +74,11 @@ static int check_char(history_t *history, char **buffer, int *len, int *cursor)
         return arrow_handling(history, buffer, cursor, len);
     if (specific_char(ch, buffer, len, cursor) == 1)
         return 0;
+    if (ch == '\n') {
+        write(1, "\n", 1);
+        return 1;
+    }
     append_char(buffer, ch, len, cursor);
-    if (ch == '\n')
-        return write(1, "\n\x1b[2K", 5);
     return 0;
 }
 
