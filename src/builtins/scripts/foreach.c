@@ -18,7 +18,7 @@ static int handle_bracket(command_ctx_t *ctx)
     int len = 0;
 
     if (my_wordarray_len(ctx->arg_command) > 2
-        && ctx->arg_command[2][0] != '(') {
+        && ctx->arg_command[1][0] != '(') {
         my_putstr("foreach: Words not parenthesized.\n");
         return FAILURE;
     }
@@ -53,6 +53,77 @@ static int handle_error(command_ctx_t *ctx)
     return handle_bracket(ctx);
 }
 
+static int get_len_arg(command_ctx_t *ctx)
+{
+    int len = my_wordarray_len(ctx->arg_command);
+
+    if (ctx->arg_command[len - 1]
+        && strcmp(ctx->arg_command[len - 1], ")") == 0)
+        len--;
+    if (ctx->arg_command[1] && strcmp(ctx->arg_command[1], "(") == 0)
+        len--;
+    len--;
+    return len;
+}
+
+static int start_arg(command_ctx_t *ctx)
+{
+    int start = 0;
+
+    if (strcmp(ctx->arg_command[1], "(") == 0)
+        start++;
+    return start;
+}
+
+static void fill_arg(char **arg, command_ctx_t *ctx, int i, int j)
+{
+    int start = start_arg(ctx);
+    int len_array = my_wordarray_len(ctx->arg_command) - 1;
+    int last = 0;
+
+    if (i == start + 1 && ctx->arg_command[i][0] == '(') {
+        arg[j] = ctx->arg_command[i] + 1;
+        last = strlen(arg[j]) - 1;
+        arg[j][last] *= (arg[j][last] != ')');
+        return;
+    }
+    if (i == len_array
+        && ctx->arg_command[len_array]
+        [strlen(ctx->arg_command[len_array]) - 1] == ')') {
+        arg[j] = ctx->arg_command[i];
+        arg[j][strlen(arg[j]) - 1] = '\0';
+        return;
+    }
+    arg[j] = ctx->arg_command[i];
+}
+
+static char **get_array_arg(command_ctx_t *ctx)
+{
+    int len = get_len_arg(ctx);
+    int start = start_arg(ctx);
+    int j = 0;
+    char **arg = malloc(sizeof(char *) * (len + 1));
+
+    if (arg == NULL)
+        return NULL;
+    arg[len] = NULL;
+    for (int i = start + 1; i < len + start + 1; i++) {
+        j = i - start - 1;
+        fill_arg(arg, ctx, i, j);
+    }
+    return arg;
+}
+
+static int foreach(command_ctx_t *ctx)
+{
+    char **arg = get_array_arg(ctx);
+
+    if (!arg)
+        return FAILURE;
+
+    return SUCCESS;
+}
+
 int builtin_foreach(main_t *main_stock, command_ctx_t *ctx)
 {
     size_t len = 0;
@@ -60,7 +131,7 @@ int builtin_foreach(main_t *main_stock, command_ctx_t *ctx)
     char *line = NULL;
 
     if (handle_error(ctx) == FAILURE)
-        return FAILURE;
+        return 1;
     while (1) {
         my_putstr("foreach? ");
         read = getline(&line, &len, stdin);
@@ -71,5 +142,5 @@ int builtin_foreach(main_t *main_stock, command_ctx_t *ctx)
             break;
     }
     free(line);
-    return SUCCESS;
+    return foreach(ctx);
 }
