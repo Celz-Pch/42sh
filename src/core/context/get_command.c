@@ -37,6 +37,20 @@ static int append_char(char **buffer, char ch, int *len, int *cursor)
     return 0;
 }
 
+static int handle_ctrl_l(char ch)
+{
+    pid_t pid;
+    char *av[] = {"clear", NULL};
+
+    pid = fork();
+    if (pid == 0) {
+        execv("/bin/clear", av);
+    } else
+        waitpid(pid, NULL, 0);
+    display_prompt();
+    return 0;
+}
+
 static int specific_char(char ch, char **buffer, int *len, int *cursor)
 {
     if (ch == 1) {
@@ -76,6 +90,8 @@ static int check_char(history_t *history, char **buffer, int *len, int *cursor)
         return -1;
     if (ch == 3)
         return 0;
+    if (ch == 12)
+        return handle_ctrl_l(ch);
     if (ch == 4)
         return handle_ctrl_d(len);
     if (ch == ARROW_START)
