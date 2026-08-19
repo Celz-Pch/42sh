@@ -27,7 +27,7 @@ jobs:
       is_mirror: ${{ steps.check.outputs.is_mirror }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: check
@@ -48,7 +48,7 @@ jobs:
       image: lukassgx/epi-docker:tek1-extended
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -150,7 +150,7 @@ jobs:
       - check_mirror
       - check_compilation_and_coding_style
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: testers
@@ -166,7 +166,7 @@ jobs:
         pull-requests: write
         contents: read
       steps:
-        - uses: actions/checkout@v6
+        - uses: actions/checkout@v7
           with:
             fetch-depth: 0
 
@@ -225,7 +225,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: pixta-dev/repository-mirroring-action@v1
