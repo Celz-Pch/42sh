@@ -1,0 +1,16 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "c",
+            "prerelease": true,
+            "prerelease-type": "alpha",
+            "changelog-sections": [
+                { "type": "feat",  "section": "New APIs / Features" },
+                { "type": "fix",   "section": "Bug Fixes" },
+                { "type": "feat!", "section": "Breaking Changes / Features" },
+                { "type": "fix!",  "section": "Breaking Changes / Bug Fixes" },
+                { "type": "chore", "hidden": true }
+            ]
+        }
+    }
+}

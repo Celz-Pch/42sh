@@ -1,0 +1,67 @@
+name: Feature request
+description: Suggest a new feature or improvement for @your-repo
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences describing the expected user-visible outcome
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - CLI / command-line behavior
+        - Project setup / initialization flow
+        - Templates / generated output
+        - Build / packaging / release
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Why is this needed? Mention the limitation, motivation, or related issue.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      placeholder: |
+        In scope:
+        -
+
+        Out of scope:
+        -
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] The change is implemented and documented
+        - [ ] Tests or examples are updated when needed
+        - [ ] User-facing behavior is clear and consistent
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies (blocked by / blocks)
+      placeholder: "Blocked by #X, Blocks #Y"

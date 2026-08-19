@@ -1,128 +1,119 @@
-# Contributing to 42sh
+# Contributing
 
-Welcome to **42sh** — a tcsh-compatible shell written in C.
-This document describes the conventions and workflow used by the team.
-
----
+Thanks for considering a contribution. This project template is intended to be reusable across many languages and project types, so contributions should stay clear, focused, and easy to adapt.
 
 ## Table of Contents
 
-- [Branching Strategy](#branching-strategy)
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Development Workflow](#development-workflow)
 - [Commit Convention](#commit-convention)
-- [Pull Requests](#pull-requests)
-- [Code Review](#code-review)
-- [Linking Issues](#linking-issues)
-- [Coding Standards](#coding-standards)
+- [Testing](#testing)
+- [Submitting Changes](#submitting-changes)
+- [Reporting Bugs / Requesting Features](#reporting-bugs--requesting-features)
+- [Release Process](#release-process)
+- [Style Guidelines](#style-guidelines)
 
----
+## Code of Conduct
 
-## Branching Strategy
+Be respectful, constructive, and patient. Disagreements about implementation are fine; personal attacks are not.
 
-All work is done on feature branches. **Never commit directly to `main`.**
+## Getting Started
 
-**Branch naming:**
+### Prerequisites
 
+- A working runtime or toolchain for the project you are scaffolding
+- A package manager or build tool appropriate to the stack you choose
+- A local development environment that can run tests or build checks
+
+### Setup
+
+```bash
+git clone <repository-url>
+cd <project-name>
+# Install dependencies or set up the local environment for your stack
 ```
-feature/<short-description>
-```
 
-Examples:
+Verify your setup works with the appropriate build or test command for your project.
 
-```
-feature/builtin-cd
-feature/pipe-support
-feature/lexer-refactor
-```
+## Project Structure
 
-Keep the description short, lowercase, and hyphen-separated.
+| Path | Purpose |
+|------|---------|
+| `src/` or `app/` | Main implementation files |
+| `tests/` | Automated tests and regression checks |
+| `docs/` | Usage notes, architecture, or other documentation |
+| `assets/` | Images, logos, and other static files |
+| `scripts/` | Helper scripts or automation |
 
----
+## Development Workflow
+
+1. Fork the repo
+2. Create a branch from `main`:
+   ```bash
+   git checkout -b feature/short-description
+   # or
+   git checkout -b fix/short-description
+   ```
+3. Make your changes, with tests where applicable
+4. Run the test suite locally (see [Testing](#testing))
+5. Push and open a Pull Request using the appropriate [PR template](.github/PULL_REQUEST_TEMPLATE/)
 
 ## Commit Convention
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/).
-
-**Format:**
+This project follows **[Conventional Commits](https://www.conventionalcommits.org/)** — it's required, since the release process (`release-config.json` / `.release-manifest.json`) depends on commit messages to determine versioning and changelog entries.
 
 ```
-<type>: <short description>
+<type>(<scope>): <short description>
+
+[optional body]
 ```
 
-**Types:**
+Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `chore`.
 
-| Type | When to use |
-|------|-------------|
-| `feat` | A new feature |
-| `fix` | A bug fix |
-| `chore` | Maintenance, tooling, config |
-| `refactor` | Code restructuring without behavior change |
-| `docs` | Documentation only |
-| `test` | Adding or fixing tests |
-| `style` | Formatting, missing semicolons, etc. |
+## Testing
 
-**Examples:**
+- Add or update tests when changing behavior.
+- Run the project’s normal test or validation commands before opening a PR.
+- If your change affects packaging, deployment, or user-facing behavior, verify it with the relevant checks.
 
-```
-feat: add cd builtin with OLDPWD support
-fix: handle empty pipe input without crash
-refactor: split lexer into tokenizer and parser
-docs: update README with build instructions
-```
+## Submitting Changes
 
-- Use the **imperative mood** ("add", not "added" or "adds")
-- Keep the subject line under 72 characters
-- No period at the end
+Open your PR using the template that matches your change:
+
+| Change type        | Template                                              |
+|---------------------|--------------------------------------------------------|
+| New feature          | `?template=feature.md`                                |
+| Bug fix               | `?template=hotfix.md`                                  |
+| Release (maintainers) | `?template=release.md`                                 |
+
+A PR is ready for review once every checkbox in its template is checked. Reviewers may ask for changes before merging — that's normal, not a rejection.
+
+## Reporting Bugs / Requesting Features
+
+Please use the issue templates instead of opening a blank issue when possible.
+
+- **Bug report**: include reproduction steps, expected behavior, actual behavior, and environment details.
+- **Feature request**: include goals, scope, and any constraints or dependencies.
+
+## Release Process
+
+*(Maintainers only — included for transparency.)*
+
+1. Ensure all merged commits on `main` follow Conventional Commits
+2. Confirm `release-config.json` / `.release-manifest.json` are up to date
+3. Confirm the **CZSH** workflow is green on `stable`
+4. Open a release PR using the `release.md` template
+5. If a published release breaks downstream usage: publish a patch (`vX.Y.Z+1`) and yank the broken version on PyPI rather than force-pushing history
+
+## Style Guidelines
+
+- Keep changes focused and easy to review.
+- Follow the existing style of the repository.
+- Prefer clear naming, small commits, and concise documentation.
+- Adapt the tooling and conventions to the stack you are using.
 
 ---
 
-## Pull Requests
-
-1. Make sure your branch is up to date with `main` before opening a PR
-2. Open a PR from your feature branch targeting `main`
-3. Fill in the PR description — what it does, why, and any relevant notes
-4. **Link the PR to its corresponding issue** (see [Linking Issues](#linking-issues))
-5. Assign at least one reviewer
-
-**A PR must not be merged by its own author.**
-
----
-
-## Code Review
-
-- At least **1 approval** is required before merging
-- Address all review comments before requesting a re-review
-- Reviewers should respond within a reasonable time — if blocked, ping on the team channel
-- Prefer **squash merge** to keep the history clean
-
-**Reviewer checklist:**
-- Does the code respect Epitech norms? (20-line functions, 4 params max, no forbidden stdlib)
-- Is the logic clear and documented where needed?
-- Does it break any existing behavior?
-
----
-
-## Linking Issues
-
-Every PR should be linked to a GitHub issue using a closing keyword in the PR description:
-
-```
-Closes #42
-Fixes #17
-```
-
-This automatically closes the issue when the PR is merged and keeps the
-milestone progress up to date.
-
----
-
-## Coding Standards
-
-This project follows **Epitech coding norms**:
-
-- Functions must not exceed **20 lines**
-- Functions must not take more than **4 parameters**
-- No use of the standard library beyond `write`, `malloc`, and authorized functions
-- One function per file where applicable
-- No global variables unless explicitly justified
-
-Any PR that violates these norms will be rejected during review.
+Questions that aren't a bug or feature request can go in [Discussions](https://github.com/your-name/your-repo/discussions) instead of an issue.
