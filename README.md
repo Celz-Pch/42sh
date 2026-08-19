@@ -112,11 +112,8 @@ Distributed under the MIT License. See [LICENSE](./LICENSE) for more information
 ## Acknowledgments
 
 * [tcsh manual](https://www.tcsh.org/) - Reference behavior for expansion order, builtins, and error messages
-* [Markdown](https://www.markdownguide.org/) - The format used for documentation in this project
 
 [C-shield]: https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white
 [C-url]: https://en.wikipedia.org/wiki/C_(programming_language)
 [Make-shield]: https://img.shields.io/badge/Make-A42E2B?style=for-the-badge&logo=gnu&logoColor=white
 [Make-url]: https://www.gnu.org/software/make/
-[Markdown-shield]: https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white
-[Markdown-url]: https://www.markdownguide.org/
