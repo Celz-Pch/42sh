@@ -2,7 +2,7 @@ name: Release Stable
 
 on:
   workflow_run:
-    workflows: ["template - CI"]
+    workflows: ["CI"]
     types: [completed]
     branches: [stable]
 
