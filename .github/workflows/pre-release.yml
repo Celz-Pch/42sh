@@ -25,26 +25,26 @@ jobs:
 
     steps:
       - uses: googleapis/release-please-action@v4
-        id: release
+        id: pre-release
         with:
           target-branch: staging
           config-file: release-config.json
           manifest-file: .release-manifest.json
 
       - uses: actions/checkout@v6
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.pre-release.outputs.release_created }}
         with:
           fetch-depth: 0
           ref: staging
 
       - name: Build
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.pre-release.outputs.release_created }}
         run: |
           make
 
       - name: Upload to GitHub Release
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.pre-release.outputs.release_created }}
         env:
             GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} 42sh
+          gh release upload ${{ steps.pre-release.outputs.tag_name }} 42sh
