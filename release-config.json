@@ -1,7 +1,7 @@
 {
     "packages": {
         ".": {
-            "release-type": "c",
+            "release-type": "simple",
             "prerelease": true,
             "prerelease-type": "alpha",
             "changelog-sections": [
