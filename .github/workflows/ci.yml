@@ -27,7 +27,7 @@ jobs:
       is_mirror: ${{ steps.check.outputs.is_mirror }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: check
@@ -48,7 +48,7 @@ jobs:
       image: lukassgx/epi-docker:tek1-extended
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -150,7 +150,7 @@ jobs:
       - check_mirror
       - check_compilation_and_coding_style
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: testers
@@ -158,7 +158,7 @@ jobs:
         timeout-minutes: 2
   
   open_pull_request:
-      if: (github.ref_name == 'develop' || github.ref_name == 'staging') && github.event_name == 'push'
+      if: (github.ref_name == 'develop' || github.ref_name == 'main') && github.event_name == 'push'
       needs:
         - run_tests
       runs-on: ubuntu-latest
@@ -166,7 +166,7 @@ jobs:
         pull-requests: write
         contents: read
       steps:
-        - uses: actions/checkout@v6
+        - uses: actions/checkout@v7
           with:
             fetch-depth: 0
 
@@ -174,7 +174,7 @@ jobs:
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
-            if [[ "${{ github.ref_name }}" == "staging" ]]; then
+            if [[ "${{ github.ref_name }}" == "develop" ]]; then
                 AHEAD_COMMITS=$(gh api repos/${{ github.repository }}/compare/main...${{ github.ref_name }} --jq '.ahead_by')
             else
                 AHEAD_COMMITS=$(gh api repos/${{ github.repository }}/compare/staging...${{ github.ref_name }} --jq '.ahead_by')
@@ -188,7 +188,7 @@ jobs:
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
-            if [[ "${{ github.ref_name }}" == "staging" ]]; then
+            if [[ "${{ github.ref_name }}" == "develop" ]]; then
                 BASE_BRANCH="main"
                 COMPARE_TARGET="origin/main"
             else
@@ -217,7 +217,7 @@ jobs:
 
   
   push_to_mirror:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/stable' && github.event_name == 'push'
     needs:
       - check_mirror
       - run_tests
@@ -225,7 +225,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: pixta-dev/repository-mirroring-action@v1
