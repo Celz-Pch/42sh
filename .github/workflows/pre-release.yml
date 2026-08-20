@@ -27,7 +27,7 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          target-branch: stable
+          target-branch: staging
           config-file: release-config.json
           manifest-file: .release-manifest.json
 
@@ -35,7 +35,7 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
         with:
           fetch-depth: 0
-          ref: stable
+          ref: staging
 
       - name: Build
         if: ${{ steps.release.outputs.release_created }}
