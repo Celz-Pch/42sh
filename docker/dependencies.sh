@@ -4,6 +4,7 @@ set -e
 
 apt-get update && apt-get install -y --no-install-recommends \
     clang-20 \
+    libclang-rt-20-dev \
     git \
     make \
     build-essential \
