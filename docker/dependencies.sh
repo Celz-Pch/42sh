@@ -3,6 +3,7 @@
 set -e
 
 apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     clang-20 \
     libclang-rt-20-dev \
     git \
@@ -15,9 +16,11 @@ apt-get update && apt-get install -y --no-install-recommends \
     gh \
     libcriterion-dev
 
+update-ca-certificates
+
 mkdir -p /app
 cd /app
-git -c http.sslVerify=false clone https://github.com/EpiSDK/EpiFaster.git
+git clone https://github.com/EpiSDK/EpiFaster.git
 
 cd /app/EpiFaster
 ln -sf /usr/bin/clang-20 /usr/bin/clang
