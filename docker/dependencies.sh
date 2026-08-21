@@ -28,7 +28,7 @@ mkdir -p /github/home/.local/bin
 cp banana-check-repo.sh /github/home/.local/bin/banana-check-repo
 ln -sf /app/EpiFaster/target/release/epiclang /usr/bin/epiclang
 
-apt-get purge -y git build-essential cargo
+apt-get purge -y build-essential cargo
 apt-get autoremove -y
 apt-get clean
 rm -rf /app/EpiFaster/.git /var/lib/apt/lists/* "$HOME/.cargo" "$HOME/.rustup" /root/.cargo /root/.rustup
