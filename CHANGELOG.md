@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.0](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-21082026-3...v1.0.0) (2026-08-21)
+
+
+* release 1.0.0 ([f191209](https://github.com/OpenCz/C_zsh/commit/f1912097c51670a723fa28e2ccce95230ee7921c))
+
 ## [1.0.0-unstable-21082026-3](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-21082026-2...v1.0.0-unstable-21082026-3) (2026-08-21)
 
 
