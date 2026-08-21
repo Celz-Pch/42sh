@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.0-unstable-21082026](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-20082026...v1.0.0-unstable-21082026) (2026-08-21)
+
+
+* release 1.0.0-unstable-21082026 ([c53ce74](https://github.com/OpenCz/C_zsh/commit/c53ce7459e22a14fb4d40af23f716d4cbba6ce7d))
+
+
+### New APIs / Features
+
+* switch to ubuntu container ([b95049d](https://github.com/OpenCz/C_zsh/commit/b95049dd31524943c010908d3bf2bf8f99aace4c))
+
 ## 1.0.0-unstable-20082026 (2026-08-20)
 
 
