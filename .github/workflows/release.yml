@@ -6,14 +6,39 @@ on:
     types: [completed]
     branches: [stable]
 
+env:
+  MIRROR_SSH_URL: ${{ vars.MIRROR_SSH_URL }}
+  EXECUTABLES: ${{ vars.EXECUTABLES }}
+  PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
+  CC: epiclang
+
 jobs:
-  release:
+  check_mirror:
+    environment: production
     runs-on: ubuntu-latest
-    environment: release
+
+    outputs:
+      is_mirror: ${{ steps.check.outputs.is_mirror }}
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: check
+        run: |
+          ORIGIN=$(git remote get-url origin)
+          ORIGIN=$(echo $ORIGIN | sed 's|https://github.com|git@github.com:|; s|$|.git|')
+          ORIGIN=$(echo $ORIGIN | sed 's/com:\//com:/')
+
+          echo "is_mirror=$( [ "$ORIGIN" = "$MIRROR_SSH_URL" ] && echo true || echo false )" >> $GITHUB_OUTPUT
+
+  release:
+    needs: check_mirror
+    runs-on: ubuntu-latest
     container:
       image: lukassgx/epi-docker:tek1-extended
 
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: needs.check_mirror.outputs.is_mirror == 'false' && github.event.workflow_run.conclusion == 'success'
 
     permissions:
       contents: write
@@ -46,3 +71,22 @@ jobs:
             GH_TOKEN: ${{ github.token }}
         run: |
           gh release upload ${{ steps.release.outputs.tag_name }} 42sh
+
+      
+  push_to_mirror:
+    if: github.ref == 'refs/heads/stable' && github.event_name == 'push'
+    needs:
+      - check_mirror
+      - release
+    environment: production
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ vars.MIRROR_SSH_URL }}
+          ssh_private_key: ${{ secrets.PRIVATE_SSH_KEY }}
+          ssh_username: git
