@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0-unstable-21082026-2](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-21082026...v1.0.0-unstable-21082026-2) (2026-08-21)
+
+
+* release 1.0.0-unstable-21082026-2 ([2ffa696](https://github.com/OpenCz/C_zsh/commit/2ffa696eab9374d9d8aaf8d4419f33612342cb60))
+
+
+### Bug Fixes
+
+* update environment right ([5671a3e](https://github.com/OpenCz/C_zsh/commit/5671a3ebd90ad3301aac4003454d51a11cd96668))
+* update ssl certificates ([31fc844](https://github.com/OpenCz/C_zsh/commit/31fc844eaf48564ed9a59ef402218b407e23e9c4))
+
 ## [1.0.0-unstable-21082026](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-20082026...v1.0.0-unstable-21082026) (2026-08-21)
 
 
