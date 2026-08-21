@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.0-unstable-21082026-3](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-21082026-2...v1.0.0-unstable-21082026-3) (2026-08-21)
+
+
+* release 1.0.0-unstable-21082026-3 ([07824f2](https://github.com/OpenCz/C_zsh/commit/07824f22f18baf9b03aa8e3954406822c4278af5))
+
+
+### New APIs / Features
+
+* add safe directory ([178b823](https://github.com/OpenCz/C_zsh/commit/178b8234d4be210afc7cca7f9228ae25d4c42952))
+
 ## [1.0.0-unstable-21082026-2](https://github.com/OpenCz/C_zsh/compare/v1.0.0-unstable-21082026...v1.0.0-unstable-21082026-2) (2026-08-21)
 
 
