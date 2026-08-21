@@ -75,7 +75,6 @@ jobs:
 
       
   push_to_mirror:
-    if: github.ref == 'refs/heads/stable' && github.event_name == 'push'
     needs:
       - check_mirror
       - release
