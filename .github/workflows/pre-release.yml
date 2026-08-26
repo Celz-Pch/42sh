@@ -24,14 +24,14 @@ jobs:
       issues: write
 
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: pre-release
         with:
           target-branch: staging
           config-file: release-config.json
           manifest-file: .release-manifest.json
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: ${{ steps.pre-release.outputs.release_created }}
         with:
           fetch-depth: 0
