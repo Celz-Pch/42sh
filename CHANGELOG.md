@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/OpenCz/C_zsh/compare/v1.0.1...v1.0.2) (2026-08-26)
+
+
+* release 1.0.2 ([d726923](https://github.com/OpenCz/C_zsh/commit/d726923f52575c30d74590a4074ec5895c7601db))
+* release 1.0.2 ([f92dc3d](https://github.com/OpenCz/C_zsh/commit/f92dc3da6b4de8c2069b00f8cd02508e1144d5cb))
+
 ## [1.0.1](https://github.com/OpenCz/C_zsh/compare/v1.0.0...v1.0.1) (2026-08-21)
 
 
